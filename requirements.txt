@@ -1,7 +1,0 @@
-Flask
-google-genai
-pypdf
-pdfminer.six
-crawl4ai
-duckduckgo_search
-nest_asyncio
