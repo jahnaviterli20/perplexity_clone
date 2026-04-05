@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlexOra</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="nav-menu">
+                <div class="nav-item search-box history-search-container" style="display: none;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="history-search-input" placeholder="Search history..." style="border: none; outline: none; background: transparent; width: 100%; font-size: 14px;">
+                </div>
+
+                <a href="#" class="nav-item search-box" id="sidebar-search-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Search</span>
+                </a>
+
+                <a href="#" class="nav-item" id="back-home-btn" style="display: none;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </a>
+
+                
+                <div class="nav-divider"></div>
+                
+                <a href="#" class="nav-item" id="new-thread-btn">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>New thread</span>
+                </a>
+                <a href="#" class="nav-item" id="history-view-btn">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>History</span>
+                </a>
+
+                <a href="#" class="nav-item sidebar-mode" data-mode="search">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>Web Search</span>
+                </a>
+                
+                <div class="nav-item-group" id="bizmind-group">
+                    <a href="#" class="nav-item sidebar-mode" data-mode="business">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>BizMind</span>
+                        <i class="fa-solid fa-chevron-down toggle-icon" style="margin-left: auto; font-size: 10px;"></i>
+                    </a>
+                    <div class="sub-nav-menu" id="bizmind-phases" style="display: none;">
+                        <a href="#" class="sub-nav-item" id="phase-1-ui">
+                            <i class="fa-regular fa-circle-check"></i> 1. Idea Validator
+                        </a>
+                        <a href="#" class="sub-nav-item" id="phase-2-ui">
+                            <i class="fa-solid fa-chart-pie"></i> 2. Competitor Analysis
+                        </a>
+                        <a href="#" class="sub-nav-item" id="phase-3-ui">
+                            <i class="fa-solid fa-bullhorn"></i> 3. Marketing Strategy
+                        </a>
+                        <a href="#" class="sub-nav-item" id="phase-4-ui">
+                            <i class="fa-solid fa-coins"></i> 4. Financial Plan
+                        </a>
+                        <a href="#" class="sub-nav-item" id="phase-5-ui">
+                            <i class="fa-solid fa-scale-balanced"></i> 5. Legal Checklist
+                        </a>
+                    </div>
+                </div>
+                
+            </nav>
+
+            <div class="recent-section">
+                <h3 class="recent-title">Recent</h3>
+                <p class="recent-empty">Recent and active threads will appear here.</p>
+            </div>
+
+            <div class="user-section">
+                <a href="#" class="sign-in-btn">
+                    <div class="sign-in-icon">
+                        <i class="fa-solid fa-circle-user fa-lg"></i>
+                    </div>
+                    <span>Sign In</span>
+                    <i class="fa-solid fa-chevron-right chevron-icon"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <h1 class="logo-title attractive-logo">
+                    <i class="fa-solid fa-wand-sparkles"></i>
+                    <span class="gradient-text">PlexOra</span>
+                </h1>
+                <div class="chat-history" style="display: none; width: 100%; max-width: 720px; flex-direction: column; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; overflow-y: auto;"></div>
+                
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <textarea class="search-input" placeholder="Type / for search modes"></textarea>
+                    </div>
+                    <div class="search-controls">
+                        <div class="left-controls">
+                            <input type="file" id="pdf-input" accept="application/pdf" style="display: none;">
+                            <button class="icon-btn" id="attach-btn" style="color: #666;"><i class="fa-solid fa-plus"></i></button>
+                            <div id="file-badge" style="display: none; align-items: center; gap: 6px; padding: 4px 10px; background: #eeeff3; border-radius: 12px; font-size: 12px; color: #555; margin-left: 10px;">
+                                <i class="fa-solid fa-file-pdf" style="color: #c00;"></i>
+                                <span class="file-name">filename.pdf</span>
+                                <i class="fa-solid fa-xmark remove-file" style="margin-left: 4px; cursor: pointer; color: #888;"></i>
+                            </div>
+                        </div>
+                        <div class="right-controls">
+                            <div class="model-dropdown-container">
+                                <button class="transparent-btn model-select" id="model-select-btn">
+                                    Model <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                                </button>
+                                <div class="model-dropdown" id="model-dropdown-menu" style="display: none;">
+                                    <p class="dropdown-header">Get access to the top AI models</p>
+                                    <div class="model-option" data-model="sonar">Sonar</div>
+                                    <div class="model-option" data-model="gpt54">GPT-5.4</div>
+                                    <div class="model-option" data-model="gemini31">Gemini 3.1 Pro</div>
+                                    <div class="model-option" data-model="claude46">Claude Sonnet 4.6</div>
+                                </div>
+                            </div>
+                            <button class="icon-btn" id="mic-btn" style="color: #666;"><i class="fa-solid fa-microphone"></i></button>
+                            <button class="icon-btn dark-btn" id="send-trigger-btn"><i class="fa-solid fa-arrow-up"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
